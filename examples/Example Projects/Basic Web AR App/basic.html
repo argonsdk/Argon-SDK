@@ -44,7 +44,7 @@
                 onArgonReady : function()
                 {
                     myAppController.createContent();
-                    ARGON.loadDataset("http://argon.gatech.edu/demos/StonesAndChips.xml");
+                    ARGON.loadDataset("http://argon.gatech.edu/demos/basic/StonesAndChips.xml");
                 },
                 
                 onDataSetLoaded : function(event)
@@ -78,7 +78,7 @@
                         divEl.innerText = "AR + HTML5";
                         
                         var cssObject;
-                        cssObject = new THREE.CSSObject(divEl); 
+                        cssObject = new THREE.CSS3DObject(divEl); 
                         cssObject.width = 100;
                         cssObject.height = 100;
                         cssObject.position.x = 0.0;
@@ -99,7 +99,7 @@
         </script>
     </head>
     <body>
-        <script src="http://argon.gatech.edu/argon_o.js"></script>
+        <script src="http://argon.gatech.edu/argon.js"></script>
     </body>
     
     
