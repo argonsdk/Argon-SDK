@@ -26,25 +26,63 @@
                     cube.scale.x = 10;
                     cube.scale.y = 10;
                     cube.scale.z = 10;
+                    cube.rotation.y = 0;
                     
-                    var ori = new THREE.Object3D();
-                    ori.position.x = 0;
+                    var ori = new THREE.Object3D(); 
+                    ori.position.x = 50;
                     ori.position.y = 0;
-                    ori.position.z = 500.0;
+                    ori.position.z = -500.0;
                     ori.scale.x = 1;
                     ori.scale.y = 1;
                     ori.scale.z = 1;
-                
-                    geoObject = ARGON.createGeoObject(33.7772722222222,-84.3895361111111, 0);
+                    
+                    var divEl = document.createElement('div');
+                    divEl.id = "cssContent";
+                    divEl.style.width = "200px";
+                    divEl.style.height = "200px";
+                    divEl.style.backgroundColor = "red";
+                    divEl.style.position = 'absolute';
+                    divEl.style.fontSize = "16px";
+                    divEl.innerText = "AR + HTML5";
+                    divEl.onclick = function(event) { alert('clicked'); };
+                    
+                    var cssObject;
+                    cssObject = new THREE.CSS3DObject(divEl); 
+                    cssObject.width = 200;
+                    cssObject.height = 200;
+                    cssObject.position.x = 0.0;
+                    cssObject.position.y = 0.0;
+                    cssObject.position.z = -1000.0;
+                    cssObject.visible = true;
+
+                                        
+                    geoObject = new AR.GeoObject(33.776856,-84.3895499999999,0);
                     geoObject.add( cube );
+
+                    ori.add(cssObject);
                     
                     ARGON.World.add( geoObject );
+                    
+                    // adding a non-GeoObject to ARGON.World causes it to be rendered relative to the user
+                    ARGON.World.add( ori );
+                    
+                    var lla = ARGON.geolocation.lla;
+                    var lat = lla.latitude;
+                    var lon = lla.longitude;
                 },
                 
                 onArgonReady : function()
                 {
                     myAppController.createContent();
                     ARGON.loadDataset("http://argon.gatech.edu/demos/basic/StonesAndChips.xml");
+                    
+                    window.onorientationchange = function() {
+                        var orientation = window.interfaceOrientation
+                    }
+                    
+                    document.addEventListener("orientationchange", function(event) {
+                        var orientation = event.orientation;
+                    });
                 },
                 
                 onDataSetLoaded : function(event)
@@ -57,6 +95,7 @@
                     
                     if (stonesTarget)
                     {
+                        console.log("found stones target");
                         trackedObject        = new ARGON.TrackedObject();
                         trackedObject.name   = "AttachedToStonesTarget"; 
                         
@@ -72,7 +111,7 @@
                         divEl.id = "cssContent";
                         divEl.style.width = "100px";
                         divEl.style.height = "100px";
-                        divEl.style.backgroundColor = "red";
+                        divEl.style.backgroundColor = "green";
                         divEl.style.position = 'absolute';
                         divEl.style.fontSize = "16px";
                         divEl.innerText = "AR + HTML5";
@@ -84,7 +123,7 @@
                         cssObject.position.x = 0.0;
                         cssObject.position.y = 0.0;
                         cssObject.position.z = 50.0;
-                        cssObject.visible = false;
+                        cssObject.visible = true;
                         
                         redCube.add(cssObject);
 

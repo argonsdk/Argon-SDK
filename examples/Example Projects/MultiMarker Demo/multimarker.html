@@ -47,7 +47,7 @@
             
             _createLabelCssObject : function(el)
             {
-                var cssObject = new THREE.CSSObject(el);
+                var cssObject = new THREE.CSS3DObject(el);
                 cssObject.width = 50;
                 cssObject.height = 50;
                 cssObject.position.x = 0.0;
@@ -99,11 +99,10 @@
             _getTransformString : function(obj3d)
             {
                 var pv, rv, sv;
-                
-                var decomposed = obj3d.matrix.decompose();
-                pv = decomposed[0];
-                rv = decomposed[1];
-                sv = decomposed[2];
+                var xform = obj3d.matrix;
+                pv = new THREE.Vector3().getPositionFromMatrix(xform)
+                rv = new THREE.Euler().setFromRotationMatrix(xform)
+                sv = new THREE.Vector3().getScaleFromMatrix(xform);
                     
                 str = " { " + pv.x.toFixed(2) + "," + pv.y.toFixed(2) + "," + pv.z.toFixed(2) + "}\n"
                       + " { " + rv.x.toFixed(2) + "," + rv.y.toFixed(2) + "," + rv.z.toFixed(2) + "}\n" 
@@ -129,15 +128,15 @@
                     var to24;
                     var to25;
                     
-                    /** Matrix.decompose returns an array containing
-                     *  the translation as vector, rotation as quaternion,
-                     *  and scale as vector.  
-                     *  
-                     *  distanceTo is defined on THREE.Vector3.
+                    /** 
+                     *  distanceTo is defined on THREE.Vector3
                      */
                     
-                    to24 = trackedObject24.threeObject3D.matrix.decompose()[0];
-                    to25 = trackedObject25.threeObject3D.matrix.decompose()[0];
+                    to24 = new THREE.Vector3();
+                    to25 = new THREE.Vector3();
+                
+                    to24.getPositionFromMatrix(trackedObject24.threeObject3D.matrix);
+                    to25.getPositionFromMatrix(trackedObject25.threeObject3D.matrix);
                     
                     var dist = to24.distanceTo(to25);
                     
